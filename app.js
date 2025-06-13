@@ -6,10 +6,11 @@ const authRouter = require("./routers/auth");
 const jobsRouter = require("./routers/jobs");
 const PORT = process.env.PORT || 5000;
 const connectDB = require("./connect/db");
+const authenticateUser = require("./middlewares/authentication");
 
 app.use(express.json());
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/jobs", jobsRouter);
+app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use(errorHandlerMiddleware);
 
 const start = async () => {

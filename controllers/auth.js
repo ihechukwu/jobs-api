@@ -4,10 +4,10 @@ const { StatusCodes } = require("http-status-codes");
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/;
 
 const register = async (req, res) => {
-  //   await User.deleteMany({});
+  // await User.deleteMany({});
   const user = await User.create({ ...req.body });
   const token = user.createJWT();
-  res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+  res.status(StatusCodes.CREATED).json({ msg: "success" });
 };
 
 const login = async (req, res) => {
@@ -24,7 +24,9 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("invalid credentials");
   }
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: `welcome back ${user.name}`, token: token });
 };
 
 module.exports = {
