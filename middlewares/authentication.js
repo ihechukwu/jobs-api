@@ -4,12 +4,17 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const auth = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  // const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  //   throw new UnauthenticatedError("unauthorized");
+  // }
+  // const token = authHeader.split(" ")[1];
+
+  const token = req.cookies.token;
+  if (!token || token === "logout") {
     throw new UnauthenticatedError("unauthorized");
   }
-  const token = authHeader.split(" ")[1];
   try {
     const payload = await jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(payload.userId).select("-password");
